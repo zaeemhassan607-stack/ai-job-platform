@@ -19,7 +19,16 @@ secret_key = os.getenv("secret_key")
 ALGORITHM = "HS256"
 
 
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+origins = ["http://localhost:5173"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_headers=["*"],
+    allow_methods=["*"]
+)
 Base.metadata.create_all(bind=engine)
 
 
