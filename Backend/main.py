@@ -483,19 +483,42 @@ def job_filters(page:int = Query(1,ge=1),limit:int = Query(10,ge=1,le=50),sort_b
 # --------------------------------------------------------------
 
 
-@app.post("/login",response_model=TokenResponse)
-def login(email:str,password:str,db:Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == email).first()
-    if not user:
-         raise HTTPException(status_code=401, detail="User not found")
-    verify_pass = hash_password.verify(password,user.hashed_password)
-    if not verify_pass:
-         raise HTTPException(status_code=401, detail="Wrong password")
-    token = Create_Token(user.id,user.email)
-    return {
-        "access_token":token,
-        "token_type":"bearer"
-    }
+@app.post("/login", response_model=TokenResponse)
+def login(email: str, password: str, db: Session = Depends(get_db)):
+
+    try:
+        user = db.query(User).filter(User.email == email).first()
+
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="User not found"
+            )
+
+        verify_pass = hash_password.verify(
+            password,
+            user.hashed_password
+        )
+
+        if not verify_pass:
+            raise HTTPException(
+                status_code=401,
+                detail="Wrong password"
+            )
+
+        token = Create_Token(user.id, user.email)
+
+        return {
+            "access_token": token,
+            "token_type": "bearer"
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        print("LOGIN ERROR:", repr(e))
+        raise
 
 
 
