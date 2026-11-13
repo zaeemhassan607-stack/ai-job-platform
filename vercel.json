@@ -1,18 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "Backend/main.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+  "functions": {
+    "Backend/main.py": {
+      "maxLambdaSize": "50mb"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "Backend/main.py"
+      "source": "/(.*)",
+      "destination": "/Backend/main.py"
     }
   ]
 }
