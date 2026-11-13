@@ -1,14 +1,28 @@
+
 {
-  "version": 2,
-  "functions": {
-    "Backend/main.py": {
-      "maxLambdaSize": "50mb"
+  "services": {
+    "frontend": {
+      "root": "Frontend",
+      "framework": "vite"
+    },
+    "backend": {
+      "root": "Backend",
+      "entrypoint": "main.py",
+      "framework": "fastapi"
     }
   },
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
       "source": "/(.*)",
-      "destination": "/Backend/main.py"
+      "destination": {
+        "service": "frontend"
+      }
     }
   ]
 }
