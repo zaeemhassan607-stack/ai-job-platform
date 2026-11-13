@@ -47,7 +47,8 @@ ALGORITHM = "HS256"
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173",
+           "https://ai-job-platform-1mje2cze6-zaeem7.vercel.app"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
