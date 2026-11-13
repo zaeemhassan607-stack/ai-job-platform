@@ -15,7 +15,7 @@ class UserResponse(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    name:str = Field(min_length=2)
+    name: str = Field(min_length=2)
     email: EmailStr
 
 
@@ -81,3 +81,7 @@ class JobApplicationPaginationResponse(BaseModel):
     limit:int
     total_pages:int
     applications:list[ApplicationResponse]
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str

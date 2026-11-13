@@ -1,91 +1,121 @@
 # AI Job Application Platform
 
-A backend REST API for a job application platform built with **FastAPI, SQLAlchemy, SQLite, JWT Authentication, and Pydantic**.
-
-The platform allows users to register and log in, create and manage job postings, search and filter jobs, apply for jobs, manage applications, and update their profile and password.
+A full-stack job application platform built with **React, FastAPI, SQLAlchemy, PostgreSQL, and AI integration**. The platform connects job seekers and employers through job posting, job searching, application management, and AI-powered resume features.
 
 ## 🚀 Features
 
-### User & Authentication
+### 1. User Authentication & Profile
+- User registration and login
+- JWT-based authentication
+- Secure password hashing
+- Protected routes and API endpoints
+- View and update user profile
+- Change password
+- Delete user account
+- Logout functionality
 
-* User registration
-* Secure password hashing with `pwdlib`
-* User login
-* JWT-based authentication
-* Protected API endpoints
-* Get current authenticated user
-* Update user profile
-* Change password
-* Delete user account
-* Duplicate email prevention
+### 2. Job Management
+- Create job postings
+- View all available jobs
+- View individual job details
+- Update and delete own job postings
+- Search jobs by keywords
+- Filter jobs by title, company, and location
+- Sort jobs by newest, title, company, and location
+- Ascending and descending sorting
+- Pagination
 
-### Job Management
+**Public access:** Users can browse jobs and view job details without logging in.
 
-* Create job postings
-* Get a job by ID
-* Update own job
-* Delete own job
-* View jobs with pagination
-* Filter jobs by:
+**Authenticated access:** Users must log in to post jobs, apply for jobs, and access protected features.
 
-  * Title
-  * Company
-  * Location
-* Sort jobs by:
+### 3. Application Management
+- Apply for jobs
+- Prevent duplicate applications
+- Prevent applying to own job
+- View personal applications
+- View applications for jobs posted by the employer
+- Update application status
+- Withdraw applications
+- Delete applications
+- Sort and paginate applications
 
-  * Newest
-  * Title
-  * Company
-  * Location
-* Ascending and descending order
-* Keyword-based job search
-* Location-based search
+Application statuses:
+- Pending
+- Accepted
+- Rejected
+- Withdrawn
 
-### Application Management
+### 4. AI-Powered Features
 
-* Apply for jobs
-* Prevent users from applying to their own jobs
-* Prevent duplicate applications
-* View individual applications
-* Applicants can view their own applications
-* Job owners can view applications for their jobs
-* Application pagination
-* Sort applications by newest/oldest
-* Application status management:
+#### AI Resume Analyzer
+- Upload a PDF resume
+- Extract resume text
+- Generate a professional summary
+- Identify technical skills
+- Analyze education and work experience
+- Identify strengths and missing skills
+- Provide improvement suggestions
 
-  * Pending
-  * Accepted
-  * Rejected
-  * Withdrawn
-* Applicants can withdraw applications
-* Applicants can delete their applications
+#### AI Resume–Job Matching
+- Upload a resume and select a job
+- Compare resume skills with job requirements
+- Generate an estimated matching percentage
+- Identify matched and missing skills
+- Analyze relevant experience
+- Provide improvement suggestions and a recommendation
 
-### Validation & Error Handling
+#### AI Job Recommendations
+- Upload a resume
+- Analyze the candidate's skills and experience
+- Recommend relevant jobs from available job postings
+- Display matching percentages
+- Explain why each job matches the candidate
+- Filter out low-relevance recommendations
 
-* Pydantic request validation
-* Email validation
-* Minimum field length validation
-* Pagination validation
-* Invalid sort/order handling
-* Authentication errors
-* Authorization checks
-* Resource-not-found handling
-* Duplicate resource prevention
+AI features use the Groq API with the `openai/gpt-oss-20b` model.
+
+### 5. Validation & Error Handling
+- Pydantic request validation
+- Authentication and authorization checks
+- File type validation
+- PDF file size limit of 5 MB
+- Empty or unreadable PDF validation
+- Invalid input handling
+- Resource-not-found handling
+- Duplicate application prevention
+- Invalid sorting and pagination handling
 
 ---
 
 ## 🛠️ Technologies Used
 
-* **Python**
-* **FastAPI**
-* **SQLAlchemy**
-* **SQLite**
-* **Pydantic**
-* **JWT**
-* **python-jose**
-* **pwdlib**
-* **python-dotenv**
-* **Uvicorn**
+### Frontend
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- React Router DOM
+- React Markdown
+- Remark GFM
+
+### Backend
+- Python
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- JWT Authentication
+- python-jose
+- pwdlib
+- python-dotenv
+- Uvicorn
+- pypdf
+
+### Database & AI
+- PostgreSQL
+- Neon Database
+- Groq API
+- `openai/gpt-oss-20b`
 
 ---
 
@@ -94,273 +124,155 @@ The platform allows users to register and log in, create and manage job postings
 ```text
 AI-Job-Application-Platform/
 │
-├── venv/
+├── Backend/
+│   ├── main.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── requirements.txt
+│   ├── .env
+│   └── venv/
 │
-├── main.py
-├── database.py
-├── models.py
-├── schemas.py
-├── database.db
-├── .env
-├── .gitignore
-├── requirements.txt
+├── Frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── layouts/
+│   │   ├── context/
+│   │   ├── services/
+│   │   ├── api.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── public/
+│   ├── package.json
+│   ├── vite.config.js
+│   └── .env
+│
 └── README.md
 ```
 
-> `venv/`, `.env`, and `database.db` are excluded from Git using `.gitignore`.
+*Note: Local environment files, virtual environments, and sensitive credentials should not be committed to GitHub.*
 
 ---
 
 ## 🔐 Authentication
 
-The API uses **JWT (JSON Web Token)** authentication.
+The backend uses JWT (JSON Web Token) authentication.
 
-After successful login, the API returns an access token.
+After successful login, the API returns an access token. The frontend stores the token and sends it with requests to protected endpoints.
 
-The token is then sent in the request header:
+Authorization header:
 
 ```text
 Authorization: Bearer <access_token>
 ```
 
-Protected endpoints verify the token before allowing access.
-
-JWT configuration uses:
-
-* Secret key stored in `.env`
-* `HS256` algorithm
-* 30-minute token expiration
+JWT configuration:
+- HS256 algorithm
+- Secret key stored in environment variables
+- 30-minute token expiration
 
 ---
 
 ## 🗄️ Database
 
-The project uses **SQLite** with **SQLAlchemy ORM**.
+The project uses **PostgreSQL hosted on Neon**, with SQLAlchemy ORM.
 
-The main database models are:
+Main database models:
 
 ### User
-
-Stores:
-
-* ID
-* Name
-* Email
-* Hashed password
+- ID
+- Name
+- Email
+- Hashed password
 
 ### Job
-
-Stores:
-
-* ID
-* Title
-* Company
-* Description
-* Location
-* Job owner
+- ID
+- Title
+- Company
+- Description
+- Location
+- User ID (job owner)
 
 ### Application
+- ID
+- User ID
+- Job ID
+- Application status
 
-Stores:
-
-* ID
-* User ID
-* Job ID
-* Application status
-
-### Relationships
-
-```text
-User
- ├── Jobs
- └── Applications
-
-Job
- └── Applications
-
-Application
- ├── User
- └── Job
-```
+Relationships connect users with their job postings and applications, and jobs with their applications.
 
 ---
 
-## 📌 API Endpoints
+## 📌 Important API Endpoints
 
-### Authentication
+### Authentication & Users
 
-| Method | Endpoint | Description                    |
-| ------ | -------- | ------------------------------ |
-| POST   | `/users` | Register a new user            |
-| POST   | `/login` | Login and receive JWT token    |
-| GET    | `/me`    | Get current authenticated user |
-
-### Users
-
-| Method | Endpoint          | Description         |
-| ------ | ----------------- | ------------------- |
-| GET    | `/users`          | Get current user    |
-| PUT    | `/users/update`   | Update user profile |
-| PUT    | `/users/password` | Change password     |
-| DELETE | `/users/delete`   | Delete user account |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/users` | Register user |
+| POST | `/login` | Login |
+| GET | `/me` | Get current user |
+| PUT | `/users/update` | Update profile |
+| PUT | `/users/password` | Change password |
+| DELETE | `/users/delete` | Delete account |
 
 ### Jobs
 
-| Method | Endpoint                 | Description           |
-| ------ | ------------------------ | --------------------- |
-| POST   | `/jobs`                  | Create a job          |
-| GET    | `/jobs/{job_id}`         | Get job by ID         |
-| GET    | `/jobs`                  | List/filter/sort jobs |
-| GET    | `/jobs/search/{keyword}` | Search jobs           |
-| PUT    | `/jobs/{job_id}`         | Update own job        |
-| DELETE | `/jobs/{job_id}`         | Delete own job        |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/jobs` | Create job |
+| GET | `/jobs` | List, filter, sort and paginate jobs |
+| GET | `/jobs/{job_id}` | Get job details |
+| GET | `/jobs/search/{keyword}` | Search jobs |
+| PUT | `/jobs/{job_id}` | Update own job |
+| DELETE | `/jobs/{job_id}` | Delete own job |
+| GET | `/jobs/{job_id}/applications` | View applications for own job |
 
 ### Applications
 
-| Method | Endpoint                         | Description                     |
-| ------ | -------------------------------- | ------------------------------- |
-| POST   | `/applications`                  | Apply for a job                 |
-| GET    | `/applications/{application_id}` | Get application                 |
-| GET    | `/users/applications`            | Get current user's applications |
-| GET    | `/jobs/{job_id}/applications`    | Get applications for own job    |
-| PUT    | `/applications/{application_id}` | Update application status       |
-| DELETE | `/applications/{application_id}` | Delete application              |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/applications` | Apply for job |
+| GET | `/applications/{application_id}` | Get application |
+| GET | `/users/applications` | Get own applications |
+| PUT | `/applications/{application_id}` | Update application |
+| DELETE | `/applications/{application_id}` | Delete application |
 
----
+### AI Features
 
-## 🔎 Job Filtering & Search
-
-The `/jobs` endpoint supports multiple filters.
-
-Example query parameters:
-
-```text
-/jobs?title=Python
-/jobs?company=Tech
-/jobs?location=Lahore
-```
-
-Multiple filters can also be combined:
-
-```text
-/jobs?title=Python&location=Lahore
-```
-
-Sorting is also supported:
-
-```text
-/jobs?sort_by=title&order=asc
-```
-
-Available sort fields:
-
-```text
-title
-company
-location
-```
-
-Default sorting:
-
-```text
-newest
-```
-
----
-
-## 📄 Pagination
-
-Job and application listing endpoints support pagination.
-
-Example:
-
-```text
-/jobs?page=1&limit=10
-```
-
-The response includes:
-
-* Total records
-* Current page
-* Page limit
-* Total pages
-* Returned records
-
-Maximum page limit:
-
-```text
-50
-```
-
----
-
-## 🔍 Job Search
-
-Jobs can be searched using keywords.
-
-The search checks:
-
-* Job title
-* Description
-* Location
-* Company
-
-Example:
-
-```text
-/jobs/search/Python
-```
-
-Location can also be added:
-
-```text
-/jobs/search/Python?location=Lahore
-```
-
-Search results can be sorted:
-
-```text
-/jobs/search/Python?sort=oldest
-```
-
----
-
-## 📝 Application Workflow
-
-A typical application workflow is:
-
-```text
-User Registration
-       ↓
-Login
-       ↓
-Receive JWT Token
-       ↓
-Create / Search Jobs
-       ↓
-Apply for Job
-       ↓
-Application Status = Pending
-       ↓
-Job Owner Reviews Application
-       ↓
-Accepted / Rejected
-```
-
-Applicants can also withdraw a pending application.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/ai/analyze-resume` | Analyze PDF resume |
+| POST | `/ai/match-resume/{job_id}` | Match resume with a job |
+| POST | `/ai/recommend-jobs` | Recommend relevant jobs |
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file in the project root:
+### Backend
+
+Create a `.env` file inside the Backend folder:
 
 ```env
-database_url="sqlite:///./database.db"
-secret_key="your-secret-key"
+database_url="your_neon_postgresql_connection_string"
+secret_key="your_secret_key"
+GROQ_API_KEY="your_groq_api_key"
 ```
 
-The secret key should be kept private and should **never be committed to GitHub**.
+### Frontend
+
+Create a `.env` file inside the Frontend folder:
+
+```env
+VITE_API_URL="http://127.0.0.1:8000"
+```
+
+For deployment, configure the frontend API URL and backend environment variables using your hosting providers' environment settings.
+
+**Important:** Never upload `.env` files, database credentials, JWT secrets, or API keys to GitHub.
 
 ---
 
@@ -370,196 +282,162 @@ The secret key should be kept private and should **never be committed to GitHub*
 
 ```bash
 git clone <your-repository-url>
-```
-
-### 2. Open the project
-
-```bash
 cd AI-Job-Application-Platform
 ```
 
-### 3. Create a virtual environment
+### 2. Backend Setup
+
+Open the Backend folder:
+
+```bash
+cd Backend
+```
+
+Create a virtual environment:
 
 ```bash
 python -m venv venv
 ```
 
-### 4. Activate the virtual environment
-
-Windows:
+Activate it on Windows:
 
 ```bash
 venv\Scripts\activate
 ```
 
-### 5. Install dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. Create `.env`
+Create the backend `.env` file using the variables described above.
 
-Add:
-
-```env
-database_url="sqlite:///./database.db"
-secret_key="your-secret-key"
-```
-
-### 7. Run the application
+Run the backend:
 
 ```bash
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
-The API will be available at:
+Backend URL:
 
 ```text
 http://127.0.0.1:8000
+```
+
+### 3. Frontend Setup
+
+Open another terminal:
+
+```bash
+cd Frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create the frontend `.env` file:
+
+```env
+VITE_API_URL="http://127.0.0.1:8000"
+```
+
+Run the frontend:
+
+```bash
+npm run dev
+```
+
+Open the local frontend URL shown by Vite, usually:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
 ## 📚 API Documentation
 
-FastAPI automatically provides interactive API documentation.
+FastAPI automatically generates interactive API documentation.
 
-### Swagger UI
+**Swagger UI**
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-### ReDoc
+**ReDoc**
 
 ```text
 http://127.0.0.1:8000/redoc
 ```
 
-Swagger UI can be used to:
-
-* Test endpoints
-* Register users
-* Login
-* Authorize with JWT
-* Create jobs
-* Apply for jobs
-* Test filters and pagination
-* Test error handling
+Swagger UI can be used to test API endpoints, authentication, job management, applications, and AI functionality.
 
 ---
 
 ## 🧪 Testing
 
-The API was tested using **FastAPI Swagger UI**.
+The project has been tested through API and frontend workflows.
 
-Testing included:
-
-* User registration
-* Login
-* JWT authentication
-* Current user endpoint
-* Job creation
-* Job retrieval
-* Job filtering
-* Job searching
-* Job sorting
-* Pagination
-* Job updating
-* Job deletion
-* Application creation
-* Duplicate application prevention
-* Own-job application prevention
-* Application retrieval
-* Application authorization
-* Application status updates
-* Application deletion
-* User profile update
-* Password change
-* User deletion
-* Invalid tokens
-* Missing authentication
-* Invalid pagination values
-* Invalid sorting values
-* Invalid application status
-* Wrong password
-* Duplicate email
-* Invalid input validation
-* Non-existing resources
-
-Dependency verification was also performed using:
-
-```bash
-pip check
-```
-
-Result:
-
-```text
-No broken requirements found.
-```
+Testing includes:
+- User registration and login
+- JWT authentication
+- Profile updates
+- Job creation and retrieval
+- Public job browsing after logout
+- Job filtering, searching, sorting, and pagination
+- Job updates and deletion
+- Job applications
+- Duplicate application prevention
+- Application status management
+- Application authorization
+- PDF resume upload
+- Resume analysis
+- Resume–job matching
+- AI job recommendations
+- Invalid and oversized PDF handling
+- Empty and unreadable PDF handling
+- Error and empty-result states
 
 ---
 
-## 🔒 Security
+## 🚀 Deployment
 
-The project follows several basic security practices:
+The backend is deployed on **Vercel**:
 
-* Passwords are stored as hashes rather than plain text.
-* JWT secret key is stored in `.env`.
-* `.env` is excluded from Git.
-* Database file is excluded from Git.
-* Protected endpoints require authentication.
-* Users can only modify their own jobs.
-* Users cannot apply to their own jobs.
-* Duplicate applications are prevented.
-* Application status changes are authorization-controlled.
+[AI Job Platform Backend](https://ai-job-platform-backend-livid.vercel.app)
 
----
+The database is hosted on Neon PostgreSQL.
 
-## 🎯 Learning Goals
-
-This project was built to practice real-world backend development concepts including:
-
-* REST API development
-* FastAPI
-* Pydantic validation
-* SQLAlchemy ORM
-* Relational database design
-* CRUD operations
-* Authentication
-* JWT
-* Password hashing
-* Authorization
-* Relationships
-* Filtering
-* Searching
-* Sorting
-* Pagination
-* Error handling
-* Environment variables
-* API testing
+Configure the following environment variables in the deployment settings:
+- `database_url`
+- `secret_key`
+- `GROQ_API_KEY`
+- `VITE_API_URL` (frontend)
 
 ---
 
-## 🚀 Future Improvements
+## 🎯 Learning Outcomes
 
-Possible future improvements include:
-
-* Frontend integration with React
-* Role-based authentication
-* Admin dashboard
-* Job categories
-* Resume upload
-* AI-powered resume analysis
-* AI job recommendations
-* Email notifications
-* Application tracking dashboard
-* PostgreSQL support
-* Database migrations with Alembic
-* Automated tests with Pytest
-* API deployment
+This project helped practice:
+- Full-stack web development
+- React component architecture
+- REST API development
+- FastAPI
+- SQLAlchemy ORM
+- PostgreSQL database integration
+- JWT authentication and authorization
+- CRUD operations
+- Filtering, searching, sorting, and pagination
+- PDF processing
+- AI API integration
+- Prompt engineering
+- Frontend and backend integration
+- Deployment and environment configuration
 
 ---
 
@@ -567,21 +445,20 @@ Possible future improvements include:
 
 **Zaeem Hassan**
 
-BS Computer Science Student
+BS Computer Science Student  
 University of Sargodha
 
-Interested in:
-
-* Artificial Intelligence
-* Machine Learning
-* Backend Development
-* AI Automation
-* Full-Stack Development
+**Interests**
+- Artificial Intelligence
+- Machine Learning
+- Backend Development
+- Full-Stack Development
+- AI Automation
 
 ---
 
 ## ⭐ Project Status
 
-**Completed — Backend API**
+**Completed — Full-Stack AI Job Application Platform**
 
-The project currently provides a functional backend for managing users, jobs, and job applications with JWT authentication, database integration, filtering, searching, sorting, pagination, validation, and authorization.
+The platform includes user authentication, job management, application tracking, PostgreSQL database integration, and three AI-powered resume and job features.
