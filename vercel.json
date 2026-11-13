@@ -3,12 +3,30 @@
   "services": {
     "frontend": {
       "root": "Frontend",
-      "framework": "vite"
+      "framework": "vite",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
     },
     "backend": {
       "root": "Backend",
-      "entrypoint": "main.py",
-      "framework": "fastapi"
+      "entrypoint": "main:app",
+      "framework": "fastapi",
+      "routes": [
+        {
+          "src": "/api/(.*)",
+          "transforms": [
+            {
+              "type": "request.path",
+              "op": "set",
+              "args": "/$1"
+            }
+          ]
+        }
+      ]
     }
   },
   "rewrites": [
